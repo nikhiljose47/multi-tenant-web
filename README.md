@@ -1,59 +1,114 @@
-# MultiTenantWeb
+# Multi Tenant Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.12.
+An Angular 19 static application for hosting many public business homepages from one Cloudflare Pages deployment.
 
-## Development server
+Routes follow this format:
 
-To start a local development server, run:
+```text
+/:code/:username
+```
+
+Demo tenants:
+
+```text
+/adq/royal-bike-wash
+/k7x/grand-palace-hotel
+/m2p/glow-wellness-spa
+/t8r/math-with-rahul
+```
+
+## Run Locally
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200/adq/royal-bike-wash`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build
 
 ```bash
-ng generate component component-name
+ng build --configuration production
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The build outputs to `dist/multi-tenant-web`.
 
-```bash
-ng generate --help
+## Cloudflare Pages
+
+The app is a client-side SPA. `public/_redirects` contains:
+
+```text
+/* /index.html 200
 ```
 
-## Building
+That lets Cloudflare Pages serve deep links such as `/k7x/grand-palace-hotel` on direct open, refresh, or share.
 
-To build the project run:
+## Architecture
 
-```bash
-ng build
+Tenant data lives in `src/app/core/tenant/tenant-registry.ts`.
+
+Core contracts live in `src/app/core/tenant/tenant.models.ts`:
+
+- `TenantBusiness`
+- `BusinessCategory`
+- `TenantTheme`
+- `TenantLayout`
+- `TenantContent`
+
+Lookup is isolated in `TenantService`, with short code as the stable public identifier and username as the canonical readable slug. If a code exists but the username is wrong, the app redirects to the canonical URL.
+
+Rendering flows through `TenantHomeComponent`, which selects a category layout:
+
+- `BikeServiceLayoutComponent`
+- `HotelLayoutComponent`
+- `SpaLayoutComponent`
+- `TutorLayoutComponent`
+- `GenericLayoutComponent`
+
+Reusable sections are rendered by `DynamicSectionComponent` from each tenant's `content.sections` array.
+
+## Add A New Business
+
+Add a new object to `TENANTS` in `src/app/core/tenant/tenant-registry.ts`.
+
+Required fields:
+
+- `id`: internal only, not exposed in URLs
+- `code`: short opaque public share code
+- `username`: canonical public slug
+- `businessName`
+- `category`
+- `services`
+- `theme`
+- `layout`
+- `content.sections`
+
+The frontend must not decode business meaning from the short code. Treat codes like `adq`, `x7k2`, or `h9bx` as opaque values generated elsewhere.
+
+## Add A New Category
+
+1. Add the category literal to `BusinessCategory` in `tenant.models.ts`.
+2. Create a layout under `src/app/layouts/<category>-layout`.
+3. Add the layout to the switch in `TenantHomeComponent`.
+4. Add any category-specific section behavior to `DynamicSectionComponent` only when it is reusable.
+5. Prefer data-driven sections, theme, and layout settings before adding one-off code.
+
+## Replace Static Data With An API
+
+Keep the UI unchanged and update `TenantService`.
+
+Current static shape:
+
+```typescript
+findByCode(code: string): TenantBusiness | null
+loadTenant(code: string, username: string): TenantBusiness | null
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Future API shape can map to:
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```text
+GET /api/public/business/:code
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The service should fetch by `code`, compare `username` with the returned canonical `username`, then either render or redirect.
