@@ -48,7 +48,7 @@ export class TenantHomeComponent implements OnInit {
 
   tenant: TenantBusiness | null = null;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const code = this.route.snapshot.paramMap.get('code') ?? '';
     const username = this.route.snapshot.paramMap.get('username') ?? '';
     const tenantByCode = this.tenantService.findByCode(code);
@@ -58,7 +58,7 @@ export class TenantHomeComponent implements OnInit {
       return;
     }
 
-    this.tenant = this.tenantService.loadTenant(code, username);
+    this.tenant = await this.tenantService.loadTenant(code, username);
 
     if (this.tenant) {
       this.themeService.applyTenant(this.tenant);

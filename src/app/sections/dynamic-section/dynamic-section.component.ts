@@ -209,6 +209,11 @@ export class DynamicSectionComponent {
   }
 
   galleryImage(index: number): string {
+    const item = this.tenant.content.gallery?.[index];
+    if (item?.startsWith('http')) {
+      return item;
+    }
+
     const category = this.tenant.category;
     const images: Record<string, string[]> = {
       'bike-wash': [

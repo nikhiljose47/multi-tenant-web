@@ -10,7 +10,8 @@ import { TenantBusiness } from '../../../core/tenant/tenant.models';
     <div class="tenant-page" [class]="'nav-' + tenant.layout.navigation + ' category-' + tenant.category">
       <nav class="tenant-nav">
         <a class="brand" href="#top" aria-label="Home">
-          <span class="brand-mark">{{ tenant.businessName.charAt(0) }}</span>
+          <img *ngIf="tenant.logo" class="brand-mark brand-logo" [src]="tenant.logo" [alt]="tenant.businessName">
+          <span *ngIf="!tenant.logo" class="brand-mark">{{ tenant.businessName.charAt(0) }}</span>
           <span>{{ tenant.businessName }}</span>
         </a>
         <div class="nav-links">
