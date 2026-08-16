@@ -207,22 +207,34 @@ p {
   margin-bottom: 28px;
 }
 
-.bike-hero {
+.bike-hero,
+.shop-hero,
+.auto-hero,
+.service-hero {
   grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
 }
 
 .bike-hero .hero-copy,
+.shop-hero .hero-copy,
+.auto-hero .hero-copy,
+.service-hero .hero-copy,
 .tutor-copy,
 .spa-copy {
   display: grid;
   gap: 22px;
 }
 
-.bike-hero .hero-media {
+.bike-hero .hero-media,
+.shop-hero .hero-media,
+.auto-hero .hero-media,
+.service-hero .hero-media {
   position: relative;
 }
 
-.bike-hero img {
+.bike-hero img,
+.shop-hero img,
+.auto-hero img,
+.service-hero img {
   height: 620px;
   width: 100%;
   object-fit: cover;
@@ -242,7 +254,11 @@ p {
   font-weight: 900;
 }
 
-.hotel-hero {
+.hotel-hero,
+.fitness-hero,
+.travel-hero,
+.space-hero,
+.event-hero {
   width: 100%;
   min-height: 680px;
   padding: 110px max(24px, calc((100vw - 1160px) / 2)) 34px;
@@ -280,7 +296,61 @@ p {
   font-size: 1.55rem;
 }
 
-.spa-hero {
+.food-hero {
+  width: 100%;
+  min-height: 620px;
+  display: flex;
+  align-items: flex-end;
+  padding: 110px max(24px, calc((100vw - 1160px) / 2)) 48px;
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+}
+
+.food-hero-copy {
+  display: grid;
+  gap: 16px;
+  max-width: 680px;
+  animation: tenantFadeInUp 0.7s ease both;
+}
+
+.food-hero-copy h1 {
+  font-style: italic;
+}
+
+/* Shared entrance + hover motion, applied across every category layout */
+.section-inner {
+  animation: tenantFadeInUp 0.6s ease both;
+}
+
+.gallery-grid figure,
+.tenant-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.gallery-grid figure:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--tenant-card-shadow);
+}
+
+.tenant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--tenant-card-shadow);
+}
+
+@keyframes tenantFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.spa-hero,
+.beauty-hero {
   grid-template-columns: 0.82fr 1fr;
   min-height: 700px;
 }
@@ -306,7 +376,8 @@ p {
   font-weight: 800;
 }
 
-.tutor-hero {
+.tutor-hero,
+.learn-hero {
   grid-template-columns: 1fr 0.82fr;
 }
 
@@ -561,7 +632,12 @@ cite {
 
   .hero,
   .bike-hero,
+  .shop-hero,
+  .auto-hero,
+  .service-hero,
   .spa-hero,
+  .beauty-hero,
+  .learn-hero,
   .tutor-hero,
   .about-band,
   .hours-band,
@@ -577,12 +653,20 @@ cite {
     padding: 36px 0 24px;
   }
 
-  .hotel-hero {
+  .hotel-hero,
+  .food-hero,
+  .fitness-hero,
+  .travel-hero,
+  .space-hero,
+  .event-hero {
     min-height: 620px;
     padding-top: 96px;
   }
 
   .bike-hero img,
+  .shop-hero img,
+  .auto-hero img,
+  .service-hero img,
   .spa-portrait img {
     height: 380px;
   }

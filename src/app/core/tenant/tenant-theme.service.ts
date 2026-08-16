@@ -19,9 +19,22 @@ export class TenantThemeService {
     root.style.setProperty('--tenant-radius', tenant.theme.borderRadius);
     root.style.setProperty('--tenant-heading-font', tenant.theme.headingFont);
     root.style.setProperty('--tenant-body-font', tenant.theme.bodyFont);
-    root.style.setProperty('--tenant-card-shadow', tenant.theme.cardStyle === 'elevated' ? '0 24px 80px rgba(15, 23, 42, 0.16)' : 'none');
+    root.style.setProperty('--tenant-card-shadow', this.cardShadowFor(tenant.theme.cardStyle));
     this.title.setTitle(`${tenant.businessName} | ${tenant.city ?? 'Business Homepage'}`);
     this.meta.updateTag({ name: 'description', content: tenant.description ?? tenant.tagline ?? tenant.businessName });
+  }
+
+  private cardShadowFor(cardStyle: TenantBusiness['theme']['cardStyle']): string {
+    switch (cardStyle) {
+      case 'elevated':
+        return '0 24px 80px rgba(15, 23, 42, 0.16)';
+      case 'glass':
+      case 'bordered':
+        return '0 14px 40px rgba(15, 23, 42, 0.12)';
+      case 'flat':
+      default:
+        return 'none';
+    }
   }
 
   reset(): void {

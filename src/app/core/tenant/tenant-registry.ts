@@ -46,7 +46,7 @@ export const TENANTS: TenantBusiness[] = [
       footer: 'detailed'
     },
     content: {
-      sections: ['hero', 'booking', 'pricing', 'services', 'gallery', 'testimonials', 'opening-hours', 'location', 'contact'],
+      sections: ['booking', 'pricing', 'services', 'gallery', 'testimonials', 'opening-hours', 'location', 'contact'],
       eyebrow: 'Ride in clean. Ride out royal.',
       primaryCta: 'Book a wash',
       secondaryCta: 'View packages',
@@ -107,7 +107,7 @@ export const TENANTS: TenantBusiness[] = [
       footer: 'detailed'
     },
     content: {
-      sections: ['hero', 'booking', 'rooms', 'amenities', 'gallery', 'about', 'testimonials', 'location', 'contact'],
+      sections: ['booking', 'rooms', 'amenities', 'gallery', 'about', 'testimonials', 'location', 'contact'],
       eyebrow: 'Jaipur luxury hotel',
       primaryCta: 'Check availability',
       secondaryCta: 'Explore rooms',
@@ -172,7 +172,7 @@ export const TENANTS: TenantBusiness[] = [
       footer: 'simple'
     },
     content: {
-      sections: ['hero', 'booking', 'services', 'about', 'gallery', 'testimonials', 'opening-hours', 'contact'],
+      sections: ['booking', 'services', 'about', 'gallery', 'testimonials', 'opening-hours', 'contact'],
       eyebrow: 'Wellness, softly scheduled',
       primaryCta: 'Book appointment',
       secondaryCta: 'View treatments',
@@ -232,7 +232,7 @@ export const TENANTS: TenantBusiness[] = [
       footer: 'detailed'
     },
     content: {
-      sections: ['hero', 'services', 'teaching-method', 'results', 'testimonials', 'booking', 'opening-hours', 'contact'],
+      sections: ['services', 'teaching-method', 'results', 'testimonials', 'booking', 'opening-hours', 'contact'],
       eyebrow: 'Classes 6-12 mathematics',
       primaryCta: 'Book free demo',
       secondaryCta: 'View subjects',

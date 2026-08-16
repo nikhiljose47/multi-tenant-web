@@ -10,6 +10,17 @@ export type BusinessCategory =
   | 'clinic'
   | 'retail'
   | 'service'
+  | 'food'
+  | 'shop'
+  | 'beauty'
+  | 'health'
+  | 'fitness'
+  | 'learn'
+  | 'auto'
+  | 'space'
+  | 'travel'
+  | 'event'
+  | 'biz'
   | 'other';
 
 export type TenantSection =
