@@ -32,7 +32,7 @@ Open `http://localhost:4200/adq/royal-bike-wash`.
 ng build --configuration production
 ```
 
-The build outputs to `dist/multi-tenant-web`.
+The build outputs to `dist/browser`.
 
 ## Cloudflare Pages
 
