@@ -36,13 +36,7 @@ The build outputs to `dist/browser`.
 
 ## Cloudflare Pages
 
-The app is a client-side SPA. `public/_redirects` contains:
-
-```text
-/* /index.html 200
-```
-
-That lets Cloudflare Pages serve deep links such as `/k7x/grand-palace-hotel` on direct open, refresh, or share.
+The app is a client-side SPA. `wrangler.jsonc` sets `not_found_handling: "single-page-application"`, which lets Cloudflare serve deep links such as `/k7x/grand-palace-hotel` on direct open, refresh, or share.
 
 ## Architecture
 
