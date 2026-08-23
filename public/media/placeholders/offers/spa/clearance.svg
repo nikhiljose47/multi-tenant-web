@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="spa clearance offer">
+  <defs>
+    <filter id="blurLg" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="blurSm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="blurRays" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+</defs>
+  <radialGradient id="burst-spa" cx="50%" cy="46%" r="72%">
+      <stop offset="0%" stop-color="#fff3df"/>
+      <stop offset="55%" stop-color="#ff9a3c"/>
+      <stop offset="100%" stop-color="#e8590c"/>
+    </radialGradient>
+    <rect width="800" height="500" fill="url(#burst-spa)"/>
+    <polygon points="400.0,240.0 919,209 919,271" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 768,336 754,379" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 838,520 802,570" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 641,534 605,560" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 590,724 531,743" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 423,619 377,619" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 269,743 210,724" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 195,560 159,534" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -2,570 -38,520" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 46,379 32,336" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -119,271 -119,209" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 32,144 46,101" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -38,-40 -2,-90" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 159,-54 195,-80" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 210,-244 269,-263" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 377,-139 423,-139" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 531,-263 590,-244" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 605,-80 641,-54" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 802,-90 838,-40" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 754,101 768,144" fill="#ffffff" fill-opacity="0.5"/>
+    <circle cx="252" cy="120" r="4" fill="#06b6d4" fill-opacity="0.71"/>
+    <circle cx="186" cy="291" r="6" fill="#d6336c" fill-opacity="0.71"/>
+    <circle cx="244" cy="466" r="6" fill="#d6336c" fill-opacity="0.92"/>
+    <circle cx="711" cy="427" r="4" fill="#06b6d4" fill-opacity="0.87"/>
+    <circle cx="700" cy="71" r="6" fill="#ffe27a" fill-opacity="0.73"/>
+    <circle cx="566" cy="345" r="6" fill="#ffe27a" fill-opacity="0.86"/>
+    <circle cx="36" cy="69" r="5" fill="#ffe27a" fill-opacity="0.97"/>
+    <circle cx="38" cy="205" r="6" fill="#06b6d4" fill-opacity="0.88"/>
+    <circle cx="68" cy="178" r="9" fill="#ffe27a" fill-opacity="0.77"/>
+    <circle cx="746" cy="404" r="4" fill="#d6336c" fill-opacity="0.92"/>
+    <circle cx="755" cy="467" r="9" fill="#06b6d4" fill-opacity="0.95"/>
+    <circle cx="594" cy="287" r="7" fill="#06b6d4" fill-opacity="0.77"/>
+    <circle cx="699" cy="427" r="6" fill="#ffe27a" fill-opacity="0.97"/>
+    <circle cx="599" cy="472" r="7" fill="#ffffff" fill-opacity="0.76"/>
+    <circle cx="733" cy="230" r="5" fill="#06b6d4" fill-opacity="0.97"/>
+    <circle cx="203" cy="255" r="9" fill="#d6336c" fill-opacity="0.85"/>
+  <ellipse cx="712" cy="96" rx="48" ry="44" fill="#000" fill-opacity="0.18" filter="url(#blurSm)"/>
+  <circle cx="710" cy="90" r="44" fill="#334155"/>
+  <circle cx="710" cy="90" r="44" fill="none" stroke="#ffffff" stroke-width="3.5"/>
+  <g transform="translate(710,90) scale(1.85) translate(-12,-12)" fill="none" stroke="#ffffff" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round" color="#ffffff">
+    <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+  <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+  </g>
+</svg>

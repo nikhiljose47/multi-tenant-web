@@ -1,13 +1,21 @@
 import { Component, Input } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
-import { TenantBusiness } from '../../../core/tenant/tenant.models';
+import { TenantBusiness, TenantSection } from '../../../core/tenant/tenant.models';
+import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'app-site-shell',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, ThemeSwitcherComponent],
   template: `
-    <div class="tenant-page" [class]="'nav-' + tenant.layout.navigation + ' category-' + tenant.category">
+    <!-- TEMPORARY dev tool, safe to remove: see theme-switcher.component.ts -->
+    <app-theme-switcher [tenant]="tenant"></app-theme-switcher>
+
+    <div
+      class="tenant-page"
+      [class]="'nav-' + tenant.layout.navigation + ' category-' + tenant.category"
+      (click)="handleFragmentClick($event)"
+    >
       <nav class="tenant-nav">
         <a class="brand" href="#top" aria-label="Home">
           <img *ngIf="tenant.logo" class="brand-mark brand-logo" [src]="tenant.logo" [alt]="tenant.businessName">
@@ -45,6 +53,8 @@ import { TenantBusiness } from '../../../core/tenant/tenant.models';
 })
 export class SiteShellComponent {
   @Input({ required: true }) tenant!: TenantBusiness;
+  /** Optional composition-ordered section list (see ArchetypeLayoutComponent). Falls back to tenant.content.sections when not passed. */
+  @Input() orderedSections?: TenantSection[];
 
   get primaryLabel(): string {
     return this.tenant.content.primaryCta ?? 'Book now';
@@ -87,8 +97,22 @@ export class SiteShellComponent {
     return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
+  handleFragmentClick(event: MouseEvent): void {
+    const anchor = (event.target as HTMLElement).closest('a');
+    const href = anchor?.getAttribute('href');
+
+    if (!href || !href.startsWith('#') || href.length < 2) {
+      return;
+    }
+
+    event.preventDefault();
+    const id = href.slice(1);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    history.pushState(null, '', `${location.pathname}#${id}`);
+  }
+
   get navItems(): { id: string; label: string }[] {
-    return this.tenant.content.sections
+    return (this.orderedSections ?? this.tenant.content.sections)
       .filter((section) => !['hero', 'booking'].includes(section))
       .slice(0, 4)
       .map((section) => ({ id: section, label: this.labelFor(section) }));

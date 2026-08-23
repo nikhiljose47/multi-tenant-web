@@ -1,14 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { TenantBusiness, TenantSection } from '../../core/tenant/tenant.models';
+import { RouterLink } from '@angular/router';
+import { BusinessService, TenantBusiness, TenantOffer, TenantSection } from '../../core/tenant/tenant.models';
 import { TenantCardComponent } from '../../shared/components/tenant-card/tenant-card.component';
+import { MEDIA_PLACEHOLDER, menuItemSlug, offerPlaceholderPath, offerTypePlaceholderPath, tenantMediaPath } from '../../core/media/media-path';
+import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
+import { CATEGORY_ARCHETYPES } from '../../core/tenant/archetype-recommendations';
+import { SECTION_VARIANTS } from '../../core/tenant/section-variants';
 
 @Component({
   selector: 'app-dynamic-section',
   standalone: true,
-  imports: [NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, TenantCardComponent],
+  imports: [NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, RouterLink, TenantCardComponent, ScrollRevealDirective],
   template: `
-    <section [id]="type" class="section" [class]="'section-' + type">
+    <section [id]="type" class="section" [class]="'section-' + type" appScrollReveal>
       <ng-container [ngSwitch]="type">
         <div *ngSwitchCase="'booking'" class="booking-panel">
           <div>
@@ -77,8 +82,8 @@ import { TenantCardComponent } from '../../shared/components/tenant-card/tenant-
           </div>
           <div class="gallery-grid" [class]="tenant.layout.gallery">
             <figure *ngFor="let item of tenant.content.gallery; let i = index">
-              <img [src]="galleryImage(i)" [alt]="item" loading="lazy">
-              <figcaption>{{ item }}</figcaption>
+              <img [src]="galleryImage(i)" [alt]="galleryCaption(item) ?? tenant.businessName" loading="lazy" (error)="onImgError($event)">
+              <figcaption *ngIf="galleryCaption(item)">{{ galleryCaption(item) }}</figcaption>
             </figure>
           </div>
         </div>
@@ -88,7 +93,7 @@ import { TenantCardComponent } from '../../shared/components/tenant-card/tenant-
             <span class="section-kicker">Reviews</span>
             <h2>{{ tenant.rating }} stars from {{ tenant.reviewCount }} customers</h2>
           </div>
-          <div class="testimonial-grid">
+          <div class="testimonial-grid" [class]="testimonialVariant">
             <blockquote *ngFor="let testimonial of tenant.content.testimonials">
               <p>{{ testimonial.quote }}</p>
               <cite>{{ testimonial.name }}<span *ngIf="testimonial.meta">, {{ testimonial.meta }}</span></cite>
@@ -115,7 +120,10 @@ import { TenantCardComponent } from '../../shared/components/tenant-card/tenant-
             <h2>{{ tenant.address ?? tenant.city }}</h2>
             <p>{{ tenant.content.locationNote ?? tenant.city }}</p>
           </div>
-          <a class="button secondary" [href]="directionsHref" target="_blank" rel="noopener">Open directions</a>
+          <div class="location-actions">
+            <a class="button" [routerLink]="['/', tenant.code, tenant.username, 'location']">View map</a>
+            <a class="button secondary" [href]="directionsHref" target="_blank" rel="noopener">Open directions</a>
+          </div>
         </div>
 
         <div *ngSwitchCase="'teaching-method'" class="section-inner method-grid">
@@ -135,6 +143,84 @@ import { TenantCardComponent } from '../../shared/components/tenant-card/tenant-
           <div *ngFor="let stat of tenant.content.stats">
             <strong>{{ stat.value }}</strong>
             <span>{{ stat.label }}</span>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'offers'" class="section-inner">
+          <div class="section-heading offers-heading">
+            <div>
+              <span class="section-kicker">Offers</span>
+              <h2>Deals worth ordering for</h2>
+            </div>
+            <a class="rail-see-all" [routerLink]="['/', tenant.code, tenant.username, 'offers']">See all offers &rarr;</a>
+          </div>
+          <div class="offers-row" [class]="offerVariant">
+            <article class="offer-card" *ngFor="let offer of tenant.content.offers; let i = index">
+              <div class="offer-media">
+                <img [src]="offerImage(offer, i)" [alt]="offer.title" loading="lazy" (error)="onOfferImgError($event, offer)">
+                <span *ngIf="offer.tag" class="offer-tag-chip">{{ offer.tag }}</span>
+                <div class="offer-pill">
+                  <strong class="offer-pill-title">{{ offer.title }}</strong>
+                  <span *ngIf="offer.code" class="offer-pill-code">{{ offer.code }}</span>
+                </div>
+              </div>
+              <div class="offer-body" *ngIf="offer.description">
+                <p>{{ offer.description }}</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'menu'" class="section-inner menu-section">
+          <div class="section-heading">
+            <span class="section-kicker">Menu</span>
+            <h2>What are you craving today?</h2>
+            <p *ngIf="tenant.content.orderNote">{{ tenant.content.orderNote }}</p>
+          </div>
+
+          <div class="menu-tabs" *ngIf="menuGroups.length > 1">
+            <button
+              type="button"
+              *ngFor="let group of menuGroups"
+              class="menu-tab"
+              [class.active]="activeGroup === group"
+              (click)="activeGroup = group"
+            >{{ group }}</button>
+          </div>
+
+          <div class="menu-grid">
+            <article class="menu-card" *ngFor="let item of filteredMenuItems">
+              <div class="menu-card-media">
+                <img [src]="menuImage(item)" [alt]="item.name" loading="lazy" (error)="onImgError($event)">
+                <span *ngIf="item.veg !== undefined" class="veg-dot" [class.veg]="item.veg" [class.non-veg]="!item.veg" [attr.aria-label]="item.veg ? 'Veg' : 'Non-veg'"></span>
+                <span *ngIf="item.highlight" class="tag menu-badge">{{ item.highlight }}</span>
+              </div>
+              <div class="menu-card-body">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.description }}</p>
+                <div class="card-meta">
+                  <strong *ngIf="item.price">{{ item.price }}</strong>
+                  <div class="qty-stepper" *ngIf="qtyFor(item) === 0; else stepper">
+                    <button type="button" class="add-btn" (click)="addItem(item)">Add</button>
+                  </div>
+                  <ng-template #stepper>
+                    <div class="qty-stepper active">
+                      <button type="button" (click)="removeItem(item)" aria-label="Remove one">-</button>
+                      <span>{{ qtyFor(item) }}</span>
+                      <button type="button" (click)="addItem(item)" aria-label="Add one">+</button>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="cart-bar" *ngIf="cartCount > 0">
+            <div class="cart-summary">
+              <strong>{{ cartCount }} item<span *ngIf="cartCount > 1">s</span></strong>
+              <span *ngIf="cartTotal">&#8377;{{ cartTotal }}</span>
+            </div>
+            <a class="button" [href]="cartOrderHref" target="_blank" rel="noopener">{{ tenant.whatsapp ? 'Order on WhatsApp' : 'Checkout' }}</a>
           </div>
         </div>
 
@@ -162,6 +248,89 @@ import { TenantCardComponent } from '../../shared/components/tenant-card/tenant-
 export class DynamicSectionComponent {
   @Input({ required: true }) type!: TenantSection;
   @Input({ required: true }) tenant!: TenantBusiness;
+
+  activeGroup = 'All';
+  private readonly cart = new Map<string, number>();
+
+  get archetypeId() {
+    return this.tenant.layoutStyle ?? CATEGORY_ARCHETYPES[this.tenant.category].default;
+  }
+
+  get testimonialVariant() {
+    return SECTION_VARIANTS[this.archetypeId].testimonials;
+  }
+
+  get offerVariant() {
+    return SECTION_VARIANTS[this.archetypeId].offers;
+  }
+
+  get menuGroups(): string[] {
+    const fromServices = Array.from(new Set(this.tenant.services?.map((service) => service.group).filter(Boolean) as string[]));
+    const groups = this.tenant.content.menuGroups?.length ? this.tenant.content.menuGroups : fromServices;
+    return groups.length > 1 ? ['All', ...groups] : groups;
+  }
+
+  get filteredMenuItems() {
+    if (this.activeGroup === 'All' || !this.tenant.services?.some((service) => service.group)) {
+      return this.tenant.services ?? [];
+    }
+
+    return (this.tenant.services ?? []).filter((service) => service.group === this.activeGroup);
+  }
+
+  qtyFor(item: BusinessService): number {
+    return this.cart.get(item.name) ?? 0;
+  }
+
+  addItem(item: BusinessService): void {
+    this.cart.set(item.name, (this.cart.get(item.name) ?? 0) + 1);
+  }
+
+  removeItem(item: BusinessService): void {
+    const next = (this.cart.get(item.name) ?? 0) - 1;
+    if (next <= 0) {
+      this.cart.delete(item.name);
+    } else {
+      this.cart.set(item.name, next);
+    }
+  }
+
+  get cartCount(): number {
+    return Array.from(this.cart.values()).reduce((sum, qty) => sum + qty, 0);
+  }
+
+  get cartTotal(): number {
+    return (this.tenant.services ?? []).reduce((sum, service) => {
+      const qty = this.cart.get(service.name) ?? 0;
+      const price = parseInt((service.price ?? '').replace(/[^\d]/g, ''), 10);
+      return sum + (qty && !Number.isNaN(price) ? qty * price : 0);
+    }, 0);
+  }
+
+  get cartOrderHref(): string {
+    const lines = (this.tenant.services ?? [])
+      .filter((service) => this.qtyFor(service) > 0)
+      .map((service) => `${this.qtyFor(service)} x ${service.name}`);
+    const message = encodeURIComponent(`Hi ${this.tenant.businessName}, I'd like to order:\n${lines.join('\n')}`);
+
+    return this.tenant.whatsapp ? `https://wa.me/${this.tenant.whatsapp.replace(/[^\d]/g, '')}?text=${message}` : '#contact';
+  }
+
+  menuImage(item: BusinessService): string {
+    if (item.image) {
+      return item.image;
+    }
+
+    return tenantMediaPath(this.tenant.category, this.tenant.code, `menu/${menuItemSlug(item.name)}`);
+  }
+
+  offerImage(offer: TenantOffer, index: number): string {
+    if (offer.image) {
+      return offer.image;
+    }
+
+    return tenantMediaPath(this.tenant.category, this.tenant.code, `offer-${index + 1}`);
+  }
 
   get phoneDigits(): string {
     return this.tenant.phone?.replace(/[^\d+]/g, '') ?? '';
@@ -214,110 +383,35 @@ export class DynamicSectionComponent {
 
   galleryImage(index: number): string {
     const item = this.tenant.content.gallery?.[index];
-    if (item?.startsWith('http')) {
+    if (item?.startsWith('http') || item?.startsWith('/')) {
       return item;
     }
 
-    const category = this.tenant.category;
-    const images: Record<string, string[]> = {
-      'bike-wash': [
-        'https://images.unsplash.com/photo-1621600411688-4be93cd68504?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80'
-      ],
-      hotel: [
-        'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80'
-      ],
-      spa: [
-        'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=900&q=80'
-      ],
-      'home-tuition': [
-        'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=900&q=80'
-      ],
-      food: [
-        'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=900&q=80'
-      ],
-      shop: [
-        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1555529771-7888783a18d3?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1481437156560-3205f6a55735?auto=format&fit=crop&w=900&q=80'
-      ],
-      auto: [
-        'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=900&q=80'
-      ],
-      service: [
-        'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1581093458791-9d42e3f39938?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1581091012184-5c1a4b6e3f4b?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=900&q=80'
-      ],
-      beauty: [
-        'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1522337184243-52ba9ef8a752?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1519415510236-718bdfcd89c1?auto=format&fit=crop&w=900&q=80'
-      ],
-      health: [
-        'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=900&q=80'
-      ],
-      fitness: [
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&w=900&q=80'
-      ],
-      learn: [
-        'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=900&q=80'
-      ],
-      space: [
-        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1560185127-6ed189bf02f4?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80'
-      ],
-      travel: [
-        'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?auto=format&fit=crop&w=900&q=80'
-      ],
-      event: [
-        'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=900&q=80'
-      ],
-      biz: [
-        'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80'
-      ]
-    };
+    return tenantMediaPath(this.tenant.category, this.tenant.code, `gallery-${index + 1}`);
+  }
 
-    return images[category]?.[index % images[category].length] ?? this.tenant.coverImage ?? '';
+  galleryCaption(item: string): string | null {
+    return item.startsWith('http') || item.startsWith('/') ? null : item;
+  }
+
+  onImgError(event: Event): void {
+    (event.target as HTMLImageElement).src = MEDIA_PLACEHOLDER;
+  }
+
+  onOfferImgError(event: Event, offer: TenantOffer): void {
+    const img = event.target as HTMLImageElement;
+    const category = this.tenant.category ?? 'other';
+    const stage = img.dataset['fallback'];
+
+    if (!stage && offer.offerType) {
+      img.dataset['fallback'] = 'type';
+      img.src = offerTypePlaceholderPath(category, offer.offerType);
+    } else if (stage !== 'category' && stage !== 'flat') {
+      img.dataset['fallback'] = 'category';
+      img.src = offerPlaceholderPath(category);
+    } else {
+      img.dataset['fallback'] = 'flat';
+      img.src = MEDIA_PLACEHOLDER;
+    }
   }
 }

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="fitness seasonal offer">
+  <defs>
+    <filter id="blurLg" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="blurSm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="blurRays" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+</defs>
+  <radialGradient id="burst-fitness" cx="50%" cy="46%" r="72%">
+      <stop offset="0%" stop-color="#eaf9ff"/>
+      <stop offset="55%" stop-color="#4fc3f7"/>
+      <stop offset="100%" stop-color="#0288d1"/>
+    </radialGradient>
+    <rect width="800" height="500" fill="url(#burst-fitness)"/>
+    <polygon points="400.0,240.0 919,209 919,271" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 768,336 754,379" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 838,520 802,570" fill="#ec4899" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 641,534 605,560" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 590,724 531,743" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 423,619 377,619" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 269,743 210,724" fill="#ec4899" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 195,560 159,534" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -2,570 -38,520" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 46,379 32,336" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -119,271 -119,209" fill="#ec4899" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 32,144 46,101" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -38,-40 -2,-90" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 159,-54 195,-80" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 210,-244 269,-263" fill="#ec4899" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 377,-139 423,-139" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 531,-263 590,-244" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 605,-80 641,-54" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 802,-90 838,-40" fill="#ec4899" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 754,101 768,144" fill="#ffffff" fill-opacity="0.5"/>
+    <circle cx="30" cy="311" r="9" fill="#ec4899" fill-opacity="0.83"/>
+    <circle cx="608" cy="294" r="6" fill="#ffffff" fill-opacity="0.94"/>
+    <circle cx="140" cy="158" r="4" fill="#a5f3fc" fill-opacity="0.78"/>
+    <circle cx="767" cy="27" r="5" fill="#ffffff" fill-opacity="0.87"/>
+    <circle cx="723" cy="232" r="6" fill="#ffffff" fill-opacity="0.99"/>
+    <circle cx="194" cy="187" r="5" fill="#ec4899" fill-opacity="0.99"/>
+    <circle cx="75" cy="315" r="6" fill="#ffd23f" fill-opacity="0.82"/>
+    <circle cx="737" cy="355" r="9" fill="#ffd23f" fill-opacity="0.7"/>
+    <circle cx="765" cy="238" r="4" fill="#a5f3fc" fill-opacity="0.84"/>
+    <circle cx="732" cy="76" r="6" fill="#ec4899" fill-opacity="0.78"/>
+    <circle cx="625" cy="108" r="6" fill="#ec4899" fill-opacity="0.71"/>
+    <circle cx="680" cy="145" r="6" fill="#ec4899" fill-opacity="0.98"/>
+    <circle cx="473" cy="448" r="4" fill="#ec4899" fill-opacity="0.87"/>
+    <circle cx="90" cy="92" r="7" fill="#ffd23f" fill-opacity="0.94"/>
+    <circle cx="726" cy="360" r="7" fill="#a5f3fc" fill-opacity="0.86"/>
+    <circle cx="618" cy="44" r="7" fill="#ec4899" fill-opacity="0.92"/>
+  <ellipse cx="712" cy="96" rx="48" ry="44" fill="#000" fill-opacity="0.18" filter="url(#blurSm)"/>
+  <circle cx="710" cy="90" r="44" fill="#c2410c"/>
+  <circle cx="710" cy="90" r="44" fill="none" stroke="#ffffff" stroke-width="3.5"/>
+  <g transform="translate(710,90) scale(1.85) translate(-12,-12)" fill="none" stroke="#ffffff" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round" color="#ffffff">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+  </g>
+</svg>

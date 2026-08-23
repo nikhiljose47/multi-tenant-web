@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="event clearance offer">
+  <defs>
+    <filter id="blurLg" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="blurSm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="blurRays" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+</defs>
+  <rect width="800" height="500" fill="#1c1fd6"/>
+    <ellipse cx="660" cy="369" rx="263" ry="187" fill="#2f31e0" fill-opacity="0.55" filter="url(#blurLg)" transform="rotate(8 660 369)"/>
+    <line x1="26" y1="40" x2="96" y2="26" stroke="#ffcc00" stroke-opacity="0.8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="46" y1="52" x2="86" y2="38" stroke="#ffcc00" stroke-opacity="0.8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="26" y1="452" x2="96" y2="438" stroke="#ffcc00" stroke-opacity="0.8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="46" y1="440" x2="86" y2="426" stroke="#ffcc00" stroke-opacity="0.8" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="712" cy="96" rx="48" ry="44" fill="#000" fill-opacity="0.18" filter="url(#blurSm)"/>
+  <circle cx="710" cy="90" r="44" fill="#334155"/>
+  <circle cx="710" cy="90" r="44" fill="none" stroke="#ffffff" stroke-width="3.5"/>
+  <g transform="translate(710,90) scale(1.85) translate(-12,-12)" fill="none" stroke="#ffffff" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round" color="#ffffff">
+    <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+  <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+  </g>
+</svg>

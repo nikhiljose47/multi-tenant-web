@@ -52,15 +52,15 @@ Core contracts live in `src/app/core/tenant/tenant.models.ts`:
 
 Lookup is isolated in `TenantService`, with short code as the stable public identifier and username as the canonical readable slug. If a code exists but the username is wrong, the app redirects to the canonical URL.
 
-Rendering flows through `TenantHomeComponent`, which selects a category layout:
+Rendering flows through `TenantHomeComponent`, which renders every tenant with the single `ArchetypeLayoutComponent` (`src/app/layouts/archetype-layout/`). Category and visual layout are two independent axes:
 
-- `BikeServiceLayoutComponent`
-- `HotelLayoutComponent`
-- `SpaLayoutComponent`
-- `TutorLayoutComponent`
-- `GenericLayoutComponent`
+- **Category** (`food`, `hotel`, `spa`, ...) drives content defaults (theme preset, section list) via `CATEGORY_PRESETS` / `CATEGORY_ARCHETYPES` in `tenant.service.ts` / `archetype-recommendations.ts`.
+- **Layout archetype** (`tenant.layoutStyle`, one of 12: `simple`, `modern`, `classic`, `minimal`, `bold`, `elegant`, `friendly`, `editorial`, `dynamic`, `compact`, `immersive`, `organic`) drives structure — hero shape, spacing, typography scale, motion. Token definitions live in `archetype-tokens.ts` (`src/app/core/tenant/`); a tenant can use any archetype regardless of category. If `layoutStyle` is unset, it falls back to `CATEGORY_ARCHETYPES[category].default`.
+- **Composition** (`tenant.composition`, one of 6: `balanced`, `story`, `catalog`, `conversion`, `showcase`, `directory`) reorders — never hides — the tenant's `content.sections`. `balanced` (the default when unset) leaves the author's order untouched; the other 5 each carry a priority list in `COMPOSITION_ORDER` (`composition-tokens.ts`) that sections are sorted by, with any section not named in the list keeping its original relative position at the end. Applied once in `ArchetypeLayoutComponent.orderedSections` and threaded down to `SiteShellComponent` so the nav links match the same order.
 
-Reusable sections are rendered by `DynamicSectionComponent` from each tenant's `content.sections` array.
+A tenant is fully described by four independent things: category, archetype, composition, and theme (`TenantTheme`, see `theme-presets.ts`) — plus its `content.sections` list, which the composition reorders but never edits.
+
+Reusable sections are rendered by `DynamicSectionComponent` from each tenant's `content.sections` array. Most section markup is archetype-agnostic; a couple (`testimonials`, `offers`) additionally pick a visual variant from `SECTION_VARIANTS` (`section-variants.ts`) based on the tenant's archetype — same class-suffix pattern already used for `tenant.layout.gallery`/`services`, just archetype-driven instead of tenant-authored. Extend that file (and the matching CSS) when another section type needs its own per-archetype look.
 
 ## Add A New Business
 
@@ -83,10 +83,21 @@ The frontend must not decode business meaning from the short code. Treat codes l
 ## Add A New Category
 
 1. Add the category literal to `BusinessCategory` in `tenant.models.ts`.
-2. Create a layout under `src/app/layouts/<category>-layout`.
-3. Add the layout to the switch in `TenantHomeComponent`.
-4. Add any category-specific section behavior to `DynamicSectionComponent` only when it is reusable.
-5. Prefer data-driven sections, theme, and layout settings before adding one-off code.
+2. Add a `CATEGORY_PRESETS` entry in `tenant.service.ts` (theme + section defaults) and a `CATEGORY_ARCHETYPES` entry in `archetype-recommendations.ts` (default + recommended archetypes). No new layout component needed — every category renders through `ArchetypeLayoutComponent`.
+3. Add any category-specific section behavior to `DynamicSectionComponent` only when it is reusable.
+4. Prefer data-driven sections, theme, and archetype settings before adding one-off code.
+
+## Add A New Layout Archetype
+
+1. Add the id to `ArchetypeId` in `archetype.models.ts`.
+2. Add a token bundle to `ARCHETYPE_TOKENS` in `archetype-tokens.ts` (spacing/typography/surfaces/motion — no colors, those come from `theme-presets.ts`).
+3. If it needs concrete CSS values not already covered, extend the scale maps in `archetype-css.ts`.
+4. Reference it from `CATEGORY_ARCHETYPES` where it fits.
+
+## Add A New Composition
+
+1. Add the id to `CompositionId` in `composition.models.ts`.
+2. Add a priority list to `COMPOSITION_ORDER` and a label to `COMPOSITION_DISPLAY_NAME` in `composition-tokens.ts`. List only the section types you want pulled forward — sections you don't list keep their original order at the end. Never remove a section outright; that's a content decision for the tenant author, not the composition.
 
 ## Replace Static Data With An API
 

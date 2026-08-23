@@ -1,0 +1,185 @@
+// Consumes the --archetype-* custom properties set by TenantThemeService.applyArchetype().
+// Fallback values here match the 'modern' archetype, so pages look sane before JS applies a tenant.
+:root {
+  --archetype-section-gap: 54px;
+  --archetype-content-width: 1160px;
+  --archetype-heading-mult: 1;
+  --archetype-letter-spacing: 0;
+  --archetype-hero-radius: 14px;
+  --archetype-hero-shadow: 0 14px 40px rgba(15, 23, 42, 0.12);
+  --archetype-motion-duration: 0.4s;
+  --archetype-hover-lift: -4px;
+}
+
+// Page rhythm: section spacing + content width now come from the archetype, not a fixed constant.
+.hero,
+.section-inner,
+.tenant-footer {
+  width: min(var(--archetype-content-width), calc(100% - 32px));
+}
+
+.section {
+  padding: var(--archetype-section-gap) 0;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: var(--archetype-letter-spacing);
+}
+
+h1 {
+  font-size: clamp(calc(3rem * var(--archetype-heading-mult)), 7vw, calc(6.8rem * var(--archetype-heading-mult)));
+}
+
+h2 {
+  font-size: clamp(calc(2rem * var(--archetype-heading-mult)), 4vw, calc(4rem * var(--archetype-heading-mult)));
+}
+
+// The archetype hero itself (button + chips) uses the archetype's own radius/shadow/motion —
+// the rest of the page (cards, nav CTA, section buttons) keeps using the tenant theme's radius/shadow.
+.archetype-hero .button {
+  border-radius: var(--archetype-hero-radius);
+  box-shadow: var(--archetype-hero-shadow);
+  transition: transform var(--archetype-motion-duration) ease;
+}
+
+.archetype-hero .button:hover {
+  transform: translateY(var(--archetype-hover-lift));
+}
+
+// Scroll reveal — gated entirely by data-scroll-reveal, set from the active archetype's
+// motion.scrollReveal token. When "off" (or before JS applies a tenant), sections render
+// visible immediately — these rules simply don't match, so there's no regression risk.
+[data-scroll-reveal='on'] .section {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--archetype-motion-duration) ease, transform var(--archetype-motion-duration) ease;
+}
+
+[data-scroll-reveal='on'] .section.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+// Hero variants — the 5 shapes shared by every archetype (chosen via layout.heroVariant)
+.archetype-hero-copy {
+  display: grid;
+  gap: 16px;
+  animation: tenantFadeInUp 0.6s ease both;
+}
+
+.archetype-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.archetype-hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.archetype-hero-chips span {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tenant-text) 8%, transparent);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.archetype-hero-chips em {
+  opacity: 0.7;
+  font-style: normal;
+}
+
+.archetype-hero-media img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--archetype-hero-radius);
+  box-shadow: var(--archetype-hero-shadow);
+}
+
+// full-image: bg photo with overlay text
+.hero-full-image {
+  min-height: 620px;
+  display: flex;
+  align-items: flex-end;
+  padding: 110px max(24px, calc((100vw - var(--archetype-content-width)) / 2)) 48px;
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+}
+
+.hero-full-image .archetype-hero-copy {
+  max-width: 680px;
+}
+
+.hero-full-image .archetype-hero-chips span {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+// two-column: text + image side by side
+.hero-two-col {
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+}
+
+.hero-two-col .archetype-hero-media img {
+  height: 560px;
+}
+
+.hero-image-left {
+  grid-template-columns: minmax(320px, 1.1fr) minmax(0, 0.9fr);
+}
+
+// centered: text only, no image column
+.hero-centered {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+
+.hero-centered .archetype-hero-copy {
+  max-width: 720px;
+  justify-items: center;
+}
+
+.hero-centered .archetype-hero-actions,
+.hero-centered .archetype-hero-chips {
+  justify-content: center;
+}
+
+// editorial: stacked kicker/headline over a full-bleed image below
+.hero-editorial {
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.hero-editorial .archetype-hero-copy {
+  max-width: 820px;
+}
+
+.hero-editorial .archetype-hero-media img {
+  height: 480px;
+  border-radius: var(--archetype-hero-radius);
+}
+
+@media (max-width: 900px) {
+  .hero-two-col,
+  .hero-image-left {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-two-col .archetype-hero-media img {
+    height: 320px;
+  }
+
+  .hero-full-image {
+    min-height: 520px;
+    padding-top: 96px;
+  }
+}

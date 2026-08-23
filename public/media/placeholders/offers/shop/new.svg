@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="shop new offer">
+  <defs>
+    <filter id="blurLg" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="blurSm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="blurRays" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+</defs>
+  <radialGradient id="burst-shop" cx="50%" cy="46%" r="72%">
+      <stop offset="0%" stop-color="#fff3df"/>
+      <stop offset="55%" stop-color="#ff9a3c"/>
+      <stop offset="100%" stop-color="#e8590c"/>
+    </radialGradient>
+    <rect width="800" height="500" fill="url(#burst-shop)"/>
+    <polygon points="400.0,240.0 919,209 919,271" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 768,336 754,379" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 838,520 802,570" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 641,534 605,560" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 590,724 531,743" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 423,619 377,619" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 269,743 210,724" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 195,560 159,534" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -2,570 -38,520" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 46,379 32,336" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -119,271 -119,209" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 32,144 46,101" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 -38,-40 -2,-90" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 159,-54 195,-80" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 210,-244 269,-263" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 377,-139 423,-139" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 531,-263 590,-244" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 605,-80 641,-54" fill="#ffffff" fill-opacity="0.5"/>
+    <polygon points="400.0,240.0 802,-90 838,-40" fill="#ffe27a" fill-opacity="0.32"/>
+    <polygon points="400.0,240.0 754,101 768,144" fill="#ffffff" fill-opacity="0.5"/>
+    <circle cx="206" cy="187" r="6" fill="#ffe27a" fill-opacity="0.92"/>
+    <circle cx="625" cy="359" r="5" fill="#d6336c" fill-opacity="0.98"/>
+    <circle cx="179" cy="476" r="5" fill="#d6336c" fill-opacity="0.87"/>
+    <circle cx="627" cy="42" r="6" fill="#06b6d4" fill-opacity="0.79"/>
+    <circle cx="194" cy="152" r="5" fill="#ffffff" fill-opacity="0.91"/>
+    <circle cx="481" cy="44" r="7" fill="#d6336c" fill-opacity="0.8"/>
+    <circle cx="765" cy="431" r="7" fill="#ffe27a" fill-opacity="0.85"/>
+    <circle cx="131" cy="266" r="6" fill="#ffffff" fill-opacity="0.78"/>
+    <circle cx="660" cy="462" r="9" fill="#ffe27a" fill-opacity="0.77"/>
+    <circle cx="35" cy="67" r="7" fill="#ffe27a" fill-opacity="0.85"/>
+    <circle cx="123" cy="439" r="4" fill="#d6336c" fill-opacity="0.97"/>
+    <circle cx="722" cy="44" r="5" fill="#ffe27a" fill-opacity="0.89"/>
+    <circle cx="208" cy="172" r="7" fill="#ffe27a" fill-opacity="0.94"/>
+    <circle cx="590" cy="193" r="6" fill="#d6336c" fill-opacity="0.71"/>
+    <circle cx="718" cy="433" r="4" fill="#06b6d4" fill-opacity="0.78"/>
+    <circle cx="230" cy="142" r="6" fill="#ffe27a" fill-opacity="0.76"/>
+  <ellipse cx="712" cy="96" rx="48" ry="44" fill="#000" fill-opacity="0.18" filter="url(#blurSm)"/>
+  <circle cx="710" cy="90" r="44" fill="#047857"/>
+  <circle cx="710" cy="90" r="44" fill="none" stroke="#ffffff" stroke-width="3.5"/>
+  <g transform="translate(710,90) scale(1.85) translate(-12,-12)" fill="none" stroke="#ffffff" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round" color="#ffffff">
+    <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
+  </g>
+</svg>

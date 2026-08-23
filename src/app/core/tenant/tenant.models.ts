@@ -1,3 +1,6 @@
+import type { ArchetypeId } from './archetype.models';
+import type { CompositionId } from './composition.models';
+
 export type BusinessCategory =
   | 'bike-wash'
   | 'car-wash'
@@ -37,7 +40,9 @@ export type TenantSection =
   | 'location'
   | 'contact'
   | 'results'
-  | 'teaching-method';
+  | 'teaching-method'
+  | 'menu'
+  | 'offers';
 
 export interface BusinessService {
   name: string;
@@ -45,6 +50,31 @@ export interface BusinessService {
   price?: string;
   duration?: string;
   highlight?: string;
+  image?: string;
+  veg?: boolean;
+  group?: string;
+}
+
+// Sub-category of an offer, independent of the tenant's BusinessCategory — drives which
+// badge placeholder is used (see public/media/placeholders/offers/<category>/<offerType>.svg).
+export type OfferType =
+  | 'discount'
+  | 'bogo'
+  | 'combo'
+  | 'flash-sale'
+  | 'new'
+  | 'seasonal'
+  | 'membership'
+  | 'clearance'
+  | 'freebie';
+
+export interface TenantOffer {
+  title: string;
+  description?: string;
+  tag?: string;
+  image?: string;
+  code?: string;
+  offerType?: OfferType;
 }
 
 export interface OpeningHours {
@@ -88,6 +118,10 @@ export interface TenantContent {
   testimonials?: TenantTestimonial[];
   locationNote?: string;
   stats?: TenantStat[];
+  menuGroups?: string[];
+  offers?: TenantOffer[];
+  deliveryEta?: string;
+  orderNote?: string;
 }
 
 export interface TenantTestimonial {
@@ -107,6 +141,10 @@ export interface TenantBusiness {
   username: string;
   businessName: string;
   category: BusinessCategory;
+  /** One of the 12 layout archetypes (see archetype.models.ts). Falls back to CATEGORY_ARCHETYPES default when unset. */
+  layoutStyle?: ArchetypeId;
+  /** Reorders (never hides) content.sections — see composition.models.ts. Defaults to 'balanced' (author's order) when unset. */
+  composition?: CompositionId;
   tagline?: string;
   description?: string;
   logo?: string;
@@ -116,6 +154,8 @@ export interface TenantBusiness {
   email?: string;
   address?: string;
   city?: string;
+  lat?: number;
+  lng?: number;
   rating?: number;
   reviewCount?: number;
   services: BusinessService[];
